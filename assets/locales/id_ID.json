@@ -1,0 +1,8 @@
+{
+    "buttons": {
+        "login": "Masuk",
+        "sign_in": "Sign-in",
+        "logout": "Keluar",
+        "rememberme": "Ingat Kata Kunci"
+    }
+}
