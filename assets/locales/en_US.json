@@ -4,5 +4,8 @@
         "sign_in": "Sign-in",
         "logout": "Logout",
         "rememberme": "Remember Me"
+    },
+    "message": {
+        "welcome_user": "Hello @userid"
     }
 }

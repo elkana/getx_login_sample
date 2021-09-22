@@ -1,19 +1,20 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:getx_login_sample/app/data/models/user_model.dart';
+
+import 'pref_controller.dart';
 
 class AuthController extends GetxController {
   var authenticated = false.obs;
 
-  final box = GetStorage();
+  final pref = Get.find<PrefController>();
 
   AuthController() {
-    authenticated(box.hasData('auth'));
+    // authenticated(pref.hasLoggedUser());
   }
 
   Future<void> autoLogin() async {
-    if (box.hasData('auth') && box.hasData('last.server')) {
-      User _user = box.read('auth');
+    if (pref.hasLoggedUser()) {
+      User _user = pref.getLoggedUser();
 
       login(_user.userId!, _user.pwd!, _user.rememberMe!);
     }
@@ -25,16 +26,16 @@ class AuthController extends GetxController {
 
     await Future.delayed(const Duration(seconds: 1));
 
-    box.write('auth', User(userId: userId, pwd: pwd, rememberMe: rememberMe));
+    pref.setLoggedUser(User(userId: userId, pwd: pwd, rememberMe: rememberMe));
 
     authenticated.value = true;
   }
 
   logout() async {
-    if (box.hasData('auth')) {
-      User user = box.read('auth');
+    if (pref.hasLoggedUser()) {
+      User user = pref.getLoggedUser();
 
-      if (!user.rememberMe!) await GetStorage().remove('auth');
+      if (!user.rememberMe!) await pref.cleanLoggedUser();
     }
 
     authenticated.value = false;

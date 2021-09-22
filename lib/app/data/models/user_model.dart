@@ -18,4 +18,8 @@ class User {
     data['rememberMe'] = rememberMe;
     return data;
   }
+
+  @override
+  String toString() =>
+      'User(userId: $userId, pwd: $pwd, rememberMe: $rememberMe)';
 }

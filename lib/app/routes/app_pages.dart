@@ -17,6 +17,7 @@ class AppPages {
       name: _Paths.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
+      transition: Transition.zoom,
     ),
     GetPage(
       name: _Paths.LOGIN,

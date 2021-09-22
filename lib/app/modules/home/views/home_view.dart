@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getx_login_sample/app/controllers/pref_controller.dart';
 import 'package:getx_login_sample/app/modules/home/controllers/home_controller.dart';
+import 'package:getx_login_sample/generated/locales.g.dart';
 
 class HomeView extends GetView<HomeController> {
+  final pref = Get.find<PrefController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +22,8 @@ class HomeView extends GetView<HomeController> {
       ),
       body: Center(
         child: Text(
-          'HomeView is working',
+          LocaleKeys.message_welcome_user
+              .trParams({'userid': pref.getLoggedUser().userId!}),
           style: TextStyle(fontSize: 20),
         ),
       ),

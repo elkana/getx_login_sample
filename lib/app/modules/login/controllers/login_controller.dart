@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getx_login_sample/app/controllers/auth_controller.dart';
+import 'package:getx_login_sample/app/controllers/pref_controller.dart';
 import 'package:getx_login_sample/app/data/models/user_model.dart';
 import 'package:getx_login_sample/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
-  final authC = Get.find<AuthController>();
+  final auth = Get.find<AuthController>();
+  final pref = Get.find<PrefController>();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final box = GetStorage();
@@ -24,8 +26,8 @@ class LoginController extends GetxController {
     ctrlUserId = TextEditingController();
     ctrlPwd = TextEditingController();
 
-    if (box.hasData('auth')) {
-      User data = box.read("auth");
+    if (pref.hasLoggedUser()) {
+      User data = pref.getLoggedUser();
 
       ctrlUserId.text = data.userId!;
       ctrlPwd.text = data.pwd!;
@@ -36,17 +38,23 @@ class LoginController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    sessionCheck();
+  }
 
-    // sesion check
-    authC.autoLogin().then((value) {
-      if (authC.authenticated.isTrue) Get.offAllNamed(Routes.HOME);
-    });
+  Future sessionCheck() async {
+    try {
+      await auth.autoLogin();
+
+      if (auth.authenticated.isTrue) Get.offAllNamed(Routes.HOME);
+    } catch (e) {
+      StackTrace.current;
+
+      print('$e');
+    }
   }
 
   @override
   void onClose() {
-    debugPrint('dispose loginController');
-
     ctrlPwd.dispose();
     ctrlUserId.dispose();
   }
@@ -81,7 +89,7 @@ class LoginController extends GetxController {
 
     loading.value = true;
     try {
-      await authC.login(ctrlUserId.text, ctrlPwd.text, rememberPwd.value);
+      await auth.login(ctrlUserId.text, ctrlPwd.text, rememberPwd.value);
 
       Get.offNamed(Routes.HOME);
     } finally {

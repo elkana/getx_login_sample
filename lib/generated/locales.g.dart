@@ -15,6 +15,7 @@ class LocaleKeys {
   static const buttons_sign_in = 'buttons_sign_in';
   static const buttons_logout = 'buttons_logout';
   static const buttons_rememberme = 'buttons_rememberme';
+  static const message_welcome_user = 'message_welcome_user';
 }
 
 class Locales {
@@ -23,6 +24,7 @@ class Locales {
     'buttons_sign_in': 'Sign-in',
     'buttons_logout': 'Logout',
     'buttons_rememberme': 'Remember Me',
+    'message_welcome_user': 'Hello @userid',
   };
   static const id_ID = {
     'buttons_login': 'Masuk',
